@@ -3,6 +3,7 @@ package com.scan.reddit.db
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.scan.reddit.model.Media
+import com.scan.reddit.model.RedditVideo
 
 
 @Entity(tableName = "posts")
@@ -14,6 +15,6 @@ data class PostEntity(
     @PrimaryKey val url: String,
     val urlToImage: String,
     val isVideo:Boolean,
-    val videoUrl:Media?,
+    val videoUrl:RedditVideo?,
     var fav: Int
 )

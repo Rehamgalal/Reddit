@@ -11,6 +11,12 @@ data class Children(
 
     fun Children.toPostEntity(): PostEntity {
         val content = data.author_flair_text ?: "no content"
-        val media = data.media ?: Media(RedditVideo("",0,"",0,"",false,"","",0))
-        return PostEntity(data.id,data.author,content,data.title,data.url,data.thumbnail,data.is_video,media,0)
+        val redditVideo:RedditVideo
+           if(data.media!=null) {
+            redditVideo = data.media.reddit_video ?: RedditVideo("",0,"",0,"",false,"","",0)
+        } else {
+             redditVideo =  RedditVideo("",0,"",0,"",false,"","",0)
+        }
+
+        return PostEntity(data.id,data.author,content,data.title,data.url,data.thumbnail,data.is_video,redditVideo,0)
     }
