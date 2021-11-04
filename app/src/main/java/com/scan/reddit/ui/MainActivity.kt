@@ -75,6 +75,7 @@ class MainActivity : AppCompatActivity() , OnPostLiked{
                 button.setBackgroundResource(R.drawable.like)
                 viewModel.setFilter("")
                 isChecked = false
+                binding.recyclerView.adapter = recyclerAdapter
             } else {
                 button.setBackgroundResource(R.drawable.liked)
                 viewModel.getLikedArticles()
