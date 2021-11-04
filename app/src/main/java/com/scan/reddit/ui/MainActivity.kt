@@ -11,6 +11,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.scan.reddit.R
+import com.scan.reddit.adapter.LikedListAdapter
 import com.scan.reddit.adapter.RedditPostAdapter
 import com.scan.reddit.databinding.ActivityMainBinding
 import com.scan.reddit.db.PostEntity
@@ -18,6 +19,7 @@ import com.scan.reddit.ui.viewmodel.MainActivityViewModel
 import com.scan.reddit.utils.OnPostLiked
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.observeOn
 
 
 @ExperimentalCoroutinesApi
@@ -27,6 +29,7 @@ class MainActivity : AppCompatActivity() , OnPostLiked{
     private val viewModel: MainActivityViewModel by viewModels()
     private var  isChecked = false
     private lateinit var recyclerAdapter: RedditPostAdapter
+    private lateinit var likedAdapter: LikedListAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -88,13 +91,20 @@ class MainActivity : AppCompatActivity() , OnPostLiked{
         binding.recyclerView.adapter = recyclerAdapter
     }
 
-
+    private fun initLikedList() {
+        likedAdapter.setListener(this)
+        binding.recyclerView.adapter = likedAdapter
+    }
     private fun getData() {
         lifecycleScope.launchWhenCreated {
             viewModel.listResult.collectLatest {
                 recyclerAdapter.submitData(it)
             }
         }
+        viewModel.likedList.observe(this,{
+            likedAdapter = LikedListAdapter(it)
+            initLikedList()
+        })
     }
 
     override fun onPostLiked(post: PostEntity) {

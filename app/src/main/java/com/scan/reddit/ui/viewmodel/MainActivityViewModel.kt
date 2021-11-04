@@ -24,6 +24,7 @@ import javax.inject.Inject
 class MainActivityViewModel(@NonNull application: Application) : AndroidViewModel(application) {
     private val repository:PostsRepository
     var listResult: Flow<PagingData<PostEntity>>
+    var likedList: MutableLiveData<List<PostEntity>> = MutableLiveData()
     private var searchKey= MutableStateFlow("")
 
     @Inject
@@ -35,7 +36,7 @@ class MainActivityViewModel(@NonNull application: Application) : AndroidViewMode
     init {
         (application as Reddit).getAppComponent().inject(this)
         repository = PostsRepositoryImpl(service,dataBase)
-        listResult = searchKey.flatMapLatest {
+        listResult  = searchKey.flatMapLatest {
             getListPosts(it)
         }
     }
@@ -52,11 +53,12 @@ class MainActivityViewModel(@NonNull application: Application) : AndroidViewMode
         Observable.fromCallable {
             repository.getLiked()
         }.subscribeOn(Schedulers.io()).map {
-            listResult = flowOf(PagingData.from(it))
-        }.doOnError {
-            Log.e("Error", it.message?:"")
-        }.subscribe()
-    }
+            likedList.postValue(it)
+                }.doOnError {
+                    Log.e("Error", it.message?:"")
+                }.subscribe()
+            }
+
     fun setFilter(filter: String) {
        searchKey.value = filter
     }
