@@ -24,15 +24,13 @@ class PostsRepositoryImpl @Inject constructor(private val api: RedditApi, privat
 
     override fun insert(postEntity: PostEntity) {
         Completable.fromRunnable {
-            val id = database.articlesDao().insert(postEntity)
-            Log.i("inserted",id.toString())
+            database.articlesDao().insert(postEntity)
         }.subscribeOn(Schedulers.io()).subscribe()
     }
 
     override fun remove(postEntity: PostEntity) {
         Completable.fromRunnable {
-            val  id = database.articlesDao().deleteById(postEntity.id)
-            Log.i("inserted",id.toString())
+            database.articlesDao().deleteById(postEntity.id)
         }.subscribeOn(Schedulers.io()).subscribe()
     }
 

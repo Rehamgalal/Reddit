@@ -34,7 +34,6 @@ class MainActivity : AppCompatActivity() , OnPostLiked{
         setContentView(view)
         initRecyclerView()
         getData()
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

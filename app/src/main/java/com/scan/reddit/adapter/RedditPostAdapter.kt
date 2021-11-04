@@ -56,7 +56,7 @@ class RedditPostAdapter @Inject constructor() : PagingDataAdapter<PostEntity, Re
 
     override fun getItemViewType(position: Int): Int {
         return  if (getItem(position)!!.isVideo) {
-            if (getItem(position)!!.videoUrl!!.reddit_video.is_gif) {
+            if (getItem(position)!!.videoUrl!!.reddit_video!!.is_gif) {
                 R.layout.item_gif_post
             } else {
                 R.layout.item_video_post
