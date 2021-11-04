@@ -10,6 +10,7 @@ import com.scan.reddit.db.PostEntity
 import com.scan.reddit.model.datasource.PostsPagingDataSource
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.flow.Flow
@@ -32,10 +33,12 @@ class PostsRepositoryImpl @Inject constructor(private val api: RedditApi, privat
         }.subscribeOn(Schedulers.io()).subscribe()
     }
 
-    override fun getLiked(): Flowable<Flow<PagingData<PostEntity>>> {
-        return database.articlesDao().allPostsEntities().subscribeOn(Schedulers.io()).map {
-            flowOf(PagingData.from(it))
-            }
+    override fun getLiked(): Observable<List<PostEntity>> {
+        return Observable.fromCallable {
+            database.articlesDao().allPostsEntities()
+        }.subscribeOn(Schedulers.io()).map {
+            database.articlesDao().allPostsEntities()
+        }
     }
 
 }

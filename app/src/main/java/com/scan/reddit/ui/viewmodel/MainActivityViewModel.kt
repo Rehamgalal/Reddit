@@ -46,11 +46,11 @@ class MainActivityViewModel(@NonNull application: Application) : AndroidViewMode
         repository.remove(postEntity)
     }
     fun getLikedArticles(){
-        repository.getLiked().subscribeOn(Schedulers.io()).subscribe {
-            listResult = it
-        }
+        repository.getLiked().subscribeOn(Schedulers.io()).subscribe{
+            listResult = flowOf(PagingData.from(it))
+        }.dispose()
     }
     fun setFilter(filter: String) {
-       searchKey.compareAndSet("",filter)
+       searchKey.value = filter
     }
 }

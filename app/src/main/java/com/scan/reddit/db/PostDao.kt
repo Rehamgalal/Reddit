@@ -20,7 +20,7 @@ interface PostDao {
     fun deleteById(id: String)
 
     @Query("SELECT * FROM posts ORDER BY id")
-    fun allPostsEntities(): Flowable<List<PostEntity>>
+    fun allPostsEntities(): List<PostEntity>
 
     @Query("SELECT COUNT(*) FROM posts")
     fun getCount(): Int

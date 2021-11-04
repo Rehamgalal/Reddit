@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity() , OnPostLiked{
     }
 
     override fun onPostLiked(post: PostEntity) {
-        if (post.fav == 0) {
+        if (post.fav == 1) {
             viewModel.insert(post)
         } else {
             viewModel.remove(post)

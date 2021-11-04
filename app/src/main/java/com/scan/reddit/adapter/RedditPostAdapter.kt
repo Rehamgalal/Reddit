@@ -75,6 +75,13 @@ class RedditPostAdapter @Inject constructor() : PagingDataAdapter<PostEntity, Re
             binding.description.text = item.content ?: ""
             if (item.fav == 0) binding.like.setImageResource(R.drawable.like) else binding.like.setImageResource(R.drawable.liked)
             binding.like.setOnClickListener {
+                if (item.fav == 0) {
+                    item.fav = 1
+                    binding.like.setImageResource(R.drawable.liked)
+                } else {
+                    item.fav = 0
+                    binding.like.setImageResource(R.drawable.like)
+                }
                 listener.onPostLiked(item)
             }
         }
@@ -89,6 +96,13 @@ class RedditPostAdapter @Inject constructor() : PagingDataAdapter<PostEntity, Re
             binding.description.text = item.content
             if (item.fav == 0) binding.like.setImageResource(R.drawable.like) else binding.like.setImageResource(R.drawable.liked)
             binding.like.setOnClickListener {
+                if (item.fav == 0) {
+                    item.fav = 1
+                    binding.like.setImageResource(R.drawable.liked)
+                } else {
+                    item.fav = 0
+                    binding.like.setImageResource(R.drawable.like)
+                }
                 listener.onPostLiked(item)
             }
         }
