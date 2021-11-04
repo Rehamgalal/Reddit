@@ -1,6 +1,7 @@
 package com.scan.reddit.ui.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.annotation.NonNull
 import androidx.lifecycle.*
 import androidx.paging.PagingData
@@ -15,6 +16,7 @@ import io.reactivex.Completable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
+import java.lang.Exception
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -46,9 +48,10 @@ class MainActivityViewModel(@NonNull application: Application) : AndroidViewMode
         repository.remove(postEntity)
     }
     fun getLikedArticles(){
-        repository.getLiked().subscribeOn(Schedulers.io()).subscribe{
-            listResult = flowOf(PagingData.from(it))
-        }.dispose()
+        Completable.fromRunnable {
+            listResult = flowOf(PagingData.from(repository.getLiked()))
+
+        }.subscribeOn(Schedulers.io()).subscribe()
     }
     fun setFilter(filter: String) {
        searchKey.value = filter

@@ -1,5 +1,6 @@
 package com.scan.reddit.repositories
 
+import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -23,22 +24,21 @@ class PostsRepositoryImpl @Inject constructor(private val api: RedditApi, privat
 
     override fun insert(postEntity: PostEntity) {
         Completable.fromRunnable {
-            database.articlesDao().insert(postEntity)
+            val id = database.articlesDao().insert(postEntity)
+            Log.i("inserted",id.toString())
         }.subscribeOn(Schedulers.io()).subscribe()
     }
 
     override fun remove(postEntity: PostEntity) {
         Completable.fromRunnable {
-            database.articlesDao().deleteById(postEntity.id)
+            val  id = database.articlesDao().deleteById(postEntity.id)
+            Log.i("inserted",id.toString())
         }.subscribeOn(Schedulers.io()).subscribe()
     }
 
-    override fun getLiked(): Observable<List<PostEntity>> {
-        return Observable.fromCallable {
-            database.articlesDao().allPostsEntities()
-        }.subscribeOn(Schedulers.io()).map {
-            database.articlesDao().allPostsEntities()
-        }
+    override fun getLiked(): List<PostEntity> {
+        return database.articlesDao().allPostsEntities()
+
     }
 
 }

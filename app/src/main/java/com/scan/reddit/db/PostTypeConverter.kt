@@ -10,9 +10,7 @@ class PostTypeConverter {
     @TypeConverter
     fun fromSource(media: Media): String {
         return JSONObject().apply {
-            put("is_gif",media.reddit_video.is_gif)
-            put("dash_url",media.reddit_video.dash_url)
-
+            put("reddit_video",media.reddit_video)
         }.toString()
     }
 

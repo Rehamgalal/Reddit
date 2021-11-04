@@ -13,5 +13,5 @@ interface PostsRepository {
     fun getPosts(searchKey:String): Flow<PagingData<PostEntity>>
     fun insert(postEntity: PostEntity)
     fun remove(postEntity: PostEntity)
-    fun getLiked(): Observable<List<PostEntity>>
+    fun getLiked(): List<PostEntity>
 }
