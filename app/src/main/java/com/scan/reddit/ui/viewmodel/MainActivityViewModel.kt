@@ -13,6 +13,7 @@ import com.scan.reddit.model.Children
 import com.scan.reddit.repositories.PostsRepository
 import com.scan.reddit.repositories.PostsRepositoryImpl
 import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -48,10 +49,13 @@ class MainActivityViewModel(@NonNull application: Application) : AndroidViewMode
         repository.remove(postEntity)
     }
     fun getLikedArticles(){
-        Completable.fromRunnable {
-            listResult = flowOf(PagingData.from(repository.getLiked()))
-
-        }.subscribeOn(Schedulers.io()).subscribe()
+        Observable.fromCallable {
+            repository.getLiked()
+        }.subscribeOn(Schedulers.io()).map {
+            listResult = flowOf(PagingData.from(it))
+        }.doOnError {
+            Log.e("Error", it.message?:"")
+        }.subscribe()
     }
     fun setFilter(filter: String) {
        searchKey.value = filter

@@ -25,8 +25,8 @@ class PostTypeConverter {
     fun toSource(redditVideo: String): RedditVideo {
         val json = JSONObject(redditVideo)
 
-        return if (!json.getJSONObject("reddit_video").getString("dash_url").equals("")) {
-            RedditVideo(json.getJSONObject("reddit_video").getString("dash_url"),0,"",0,"",false,"","",0)
+        return if (!json.getString("dash_url").equals("")) {
+            RedditVideo(json.getString("dash_url"),0,"",0,"",json.getBoolean("is_gif"),"","",0)
         } else {
             RedditVideo("",0,"",0,"",false,"","",0)
         }
